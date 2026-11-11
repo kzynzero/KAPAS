@@ -7,7 +7,7 @@ import { store } from './store.js';
 import { icon } from './icons.js';
 import { esc, initials, $ } from './ui.js';
 
-const LOGO = (w, h) => `<img src="assets/kapas-logo.svg" width="${w}" height="${h}" alt="">`;
+const LOGO = (w, h) => `<img src="assets/logo.png" width="${w}" height="${h}" alt="">`;
 
 function counts(u) {
   if (!u) return { pending: 0, low: 0 };
