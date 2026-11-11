@@ -1,8 +1,8 @@
 // Page frames shared across the app.
-//  - adminShell(): the seller workspace sidebar (Dashboard, Products, Materials, Orders).
+//  - adminShell(): the Artisan/Business (Seller) workspace sidebar (Dashboard, Products, Materials, Orders, Profile).
 //  - siteHeader() / siteFooter(): the public storefront header and footer.
 // Both redraw when data changes, so pending-order and low-stock badges update live.
-import { current, logout } from './auth.js';
+import { current, logout, isSeller, isCustomer, roleLabel } from './auth.js';
 import { store } from './store.js';
 import { icon } from './icons.js';
 import { esc, initials, $ } from './ui.js';
@@ -10,12 +10,14 @@ import { esc, initials, $ } from './ui.js';
 const LOGO = (w, h) => `<img src="assets/logo.png" width="${w}" height="${h}" alt="">`;
 
 function counts(u) {
-  if (!u) return { pending: 0, low: 0 };
+  if (!isSeller(u)) return { pending: 0, low: 0 };
   return {
     pending: store.where('orders', (o) => o.sellerId === u.id && o.status === 'pending').length,
     low: store.where('materials', (m) => m.ownerId === u.id && m.quantity <= m.reorderLevel).length,
   };
 }
+// Customers: orders that are not completed yet.
+const activeOrders = (u) => (isCustomer(u) ? store.where('orders', (o) => o.buyerId === u.id && o.status !== 'completed').length : 0);
 
 const signOut = () => { logout(); location.replace('login.html'); };
 
@@ -39,6 +41,7 @@ export async function adminShell(active) {
           ${link('products.html', 'package', 'Products')}
           ${link('materials.html', 'layers', 'Materials inventory', low, 'running low')}
           ${link('orders.html', 'clipboard', 'Orders', pending, 'pending')}
+          ${link('profile.html', 'user', 'Seller profile')}
         </ul>
       </nav>
       <nav class="sidebar__nav" aria-label="More">
@@ -48,7 +51,7 @@ export async function adminShell(active) {
           <li><button type="button" data-signout>${icon('logout')}<span>Sign out</span></button></li>
         </ul>
       </nav>
-      <div class="sidebar__user"><span class="avatar" aria-hidden="true">${esc(initials(name))}</span><div><strong>${esc(name)}</strong><small>${u.role === 'business' ? 'Business account' : 'Artisan account'}</small></div></div>
+      <div class="sidebar__user"><span class="avatar" aria-hidden="true">${esc(initials(name))}</span><div><strong>${esc(name)}</strong><small>${esc(roleLabel(u.role))}</small></div></div>
       <footer class="sidebar__footer"><p>Support Local Craft.<br>Keep Our Culture Alive.</p></footer>`;
   };
 
@@ -78,15 +81,18 @@ export async function siteHeader(active) {
   el.className = 'site-header';
   const draw = () => {
     const u = current();
-    const { pending } = counts(u);
+    const { pending } = counts(u), active_ = activeOrders(u);
     const a = (href, inner) => `<a href="${href}"${active === href ? ' aria-current="page"' : ''}>${inner}</a>`;
+    const badge = (n, sr) => (n ? `<span class="badge">${n}<span class="sr"> ${sr}</span></span>` : '');
+    const out = `<button type="button" class="linkbtn" data-signout>${icon('logout', 18)}<span class="label-wide">Sign out</span></button>`;
     el.innerHTML = `<div class="site-header__inner">
       <a class="brand" href="index.html" aria-label="KAPAS home">${LOGO(26, 38)}<span class="brand__name">KAPAS</span></a>
       <nav class="site-nav" aria-label="Main">
         ${a('index.html', icon('store', 18) + '<span class="label-wide">Catalog</span>')}
-        ${u
-          ? a('dashboard.html', icon('dashboard', 18) + '<span>Dashboard</span>' + (pending ? `<span class="badge">${pending}<span class="sr"> pending</span></span>` : '')) +
-            `<button type="button" class="linkbtn" data-signout>${icon('logout', 18)}<span class="label-wide">Sign out</span></button>`
+        ${isSeller(u)
+          ? a('dashboard.html', icon('dashboard', 18) + '<span>Seller dashboard</span>' + badge(pending, 'pending')) + out
+          : isCustomer(u)
+          ? a('customer.html', icon('clipboard', 18) + '<span>My orders</span>' + badge(active_, 'active')) + out
           : a('login.html', icon('login', 18) + '<span>Sign in</span>') +
             `<a class="btn btn--gold btn--sm label-wide" href="login.html#create">Start selling</a>`}
       </nav></div>`;

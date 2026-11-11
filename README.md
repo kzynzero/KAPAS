@@ -21,11 +21,13 @@ KAPAS is a web app where artisans and small businesses manage their products, ma
 
 1. **Product catalog management.** Add, edit and delete products with a name, description, category, price, stock and photo. Products can be hidden from the public catalog.
 2. **Production and material tracking.** Record raw materials with a unit and a reorder level, add or use stock, see low-stock warnings, and record finished pieces, which adds them to a product's stock and can take the material used out of stock.
-3. **Customer order management.** Order requests land in the seller's Orders page as Pending and move through In production, Ready for pickup and Completed. Completing an order takes its items out of stock.
-4. **Public online catalog.** Anyone can search and filter products, open a product page and send an order request.
-5. **Accounts.** Two account types, each with sign up, sign in, sign out and its own dashboard:
-   - **Artisan:** an individual maker.
-   - **Business:** a workshop or souvenir shop. It can sell its own products and send order requests to other sellers.
+3. **Customer order management.** Customer orders land in the seller's Orders page as Pending and move through In production, Ready for pickup and Completed. Completing an order takes its items out of stock. Orders for made-to-order items, or for more pieces than are in stock, are marked as made-to-order requests, and sellers can filter them.
+4. **Public online catalog.** Anyone can search and filter products and open a product page with its photos. Signed-in customers send order and made-to-order requests from the product page.
+5. **Accounts.** Exactly two account types, each with sign up, sign in, sign out and its own dashboard:
+   - **Artisan/Business (Seller):** individual makers, workshops and souvenir shops. Artisans and businesses are one account type with the same Seller Dashboard and the same rights: seller profile, products and product photos, materials, customer orders, made-to-order requests and order statuses. A shop or business name is optional.
+   - **Customer (Buyer):** browses the catalog, places orders and made-to-order requests, tracks order status, sees order history and manages a customer profile on the Customer Dashboard.
+
+   Only sellers can add, edit or delete products and manage product photos, materials and order statuses. Only customers can place orders. The rules are checked in `js/shop.js` against the stored account, not only by hiding buttons. Accounts made before this change with the old Artisan or Business type are turned into Seller accounts the first time KAPAS opens, keeping all their products, materials, orders and passwords. Old backups restore the same way.
 6. **Search, filter and sort.** The catalog, Products, Materials and Orders pages each have a search box plus filters and sorting.
 7. **Live updates between pages.** When data changes in one tab, such as a new product photo, other open KAPAS tabs update without a refresh.
 8. **Backup and restore.** Export everything to a JSON file and restore it from the dashboard.
@@ -46,42 +48,13 @@ Excluded, as in the paper: online payments, delivery tracking, a mobile app, acc
 
 The justification and comparison for these choices is in the project documentation.
 
-## Run it in CodeSandbox
-
-KAPAS is a static site with no build step, no backend server and **no environment variables**.
-
-1. Go to codesandbox.io, choose **Import**, then upload this folder or import its GitHub repository.
-2. CodeSandbox reads `.codesandbox/tasks.json`: it runs `npm install`, then starts `npm start`.
-3. The preview opens on port **3000**. If it does not open by itself, open the **Start KAPAS** task and click the port 3000 preview.
-4. To run the tests, open a terminal and run `npm test` (or start the **Run tests** task).
-
-`serve.json` turns off "clean URLs" so pages keep their `.html` addresses. Sign-in redirects such as `login.html?next=orders.html` depend on that.
-
-## Run it locally
-
-You need Node.js 18 or newer. Browsers block IndexedDB on `file://` pages, so serve the folder instead of double-clicking `index.html`.
-
-```
-npm install
-npm start
-```
-
-Then open http://localhost:3000.
-
-To run the tests:
-
-```
-npm test
-```
-
-Each web address keeps its own data. Accounts and products made on `localhost` do not appear on the CodeSandbox address, and the other way round. Use Export backup and Restore from backup on the dashboard to move data between them.
-
 ## Project structure
 
 ```
 index.html  product.html  login.html          Public pages (storefront, product, sign in)
-dashboard.html  products.html                  Seller workspace pages
-materials.html  orders.html
+dashboard.html  products.html                  Artisan/Business (Seller) workspace pages
+materials.html  orders.html  profile.html
+customer.html                                  Customer (Buyer) dashboard: orders, history, profile
 assets/          Logo, favicon and the Morion mask photo
 styles/          Shared design system
   tokens.css       colours, fonts, radii, shadows
@@ -90,7 +63,7 @@ styles/          Shared design system
   layout.css       seller sidebar, storefront header and footer
   main.css         imports the four files above
 pages/           One folder per page: <page>.js (behavior) and <page>.css (page-only styles)
-  storefront/  product/  auth/  dashboard/  products/  materials/  orders/
+  storefront/  product/  auth/  dashboard/  products/  materials/  orders/  profile/  customer/
 js/              Shared modules
   store.js         IndexedDB data layer and cross-tab sync
   auth.js          accounts, password hashing, sessions, page guard
@@ -109,7 +82,7 @@ Business rules live only in `js/shop.js` and `js/auth.js`. Pages call them and n
 ## Limitations
 
 - **Data stays on one device.** There is no server or shared database. A customer on another phone cannot see an artisan's catalog. For a demo, use one browser with several tabs.
-- **Sign-in is local.** Passwords are hashed and every protected page checks the account type, but anyone with access to the browser's developer tools can read or change the stored data. It is not a replacement for server-side authentication.
+- **Sign-in is local.** Passwords are hashed, every protected page checks the account type, and the business rules check it again, but anyone with access to the browser's developer tools can read or change the stored data. It is not a replacement for server-side authentication.
 - **Clearing browser data erases everything.** Use the backup button.
 - **Order requests have no decline status.** The four statuses follow the paper. A seller who cannot take a request has to contact the customer directly.
 - **Materials are not linked to products automatically.** The amount of material used is entered when finished pieces are recorded.

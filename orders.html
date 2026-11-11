@@ -22,12 +22,14 @@
       <div>
         <span class="eyebrow">Customers</span>
         <h1>Orders</h1>
-        <p>Requests for your products appear here. Move each order along as you work on it. Completing an order takes its items out of stock.</p>
+        <p>Customer orders and made-to-order requests for your products appear here. Move each order along as you work on it. Completing an order takes its items out of stock.</p>
       </div>
     </header>
 
     <form class="toolbar" role="search" aria-label="Filter orders" onsubmit="return false" id="orderTools">
       <div class="search"><label class="sr" for="q">Search orders</label><span data-icon="search"></span><input class="control" type="search" id="q" placeholder="Customer, contact or product…" autocomplete="off"></div>
+      <label class="sr" for="fType">Filter by order type</label>
+      <select class="control" id="fType"><option value="">All orders</option><option value="stock">From stock</option><option value="mto">Made-to-order requests</option></select>
       <label class="sr" for="sort">Sort by</label>
       <select class="control" id="sort"><option value="newest">Newest first</option><option value="oldest">Oldest first</option><option value="pickup">Pickup date</option></select>
       <span class="spacer"></span>
@@ -37,15 +39,6 @@
     <div class="board" id="board"></div>
     <div class="empty" id="empty"></div>
 
-    <section class="panel" id="placed" hidden aria-labelledby="placedTitle">
-      <div class="panel__head"><h2 id="placedTitle">Orders you placed</h2><span class="hint">Requests you sent to other sellers</span></div>
-      <div class="table-wrap">
-        <table class="table table--stack">
-          <thead><tr><th scope="col">Items</th><th scope="col">Seller</th><th scope="col" class="num">Total</th><th scope="col">Sent</th><th scope="col">Status</th></tr></thead>
-          <tbody id="placedList"></tbody>
-        </table>
-      </div>
-    </section>
   </main>
 </div>
 <script type="module" src="pages/orders/orders.js"></script>

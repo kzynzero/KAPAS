@@ -37,6 +37,7 @@
 /* Account type cards */
 .roles { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; border: 0; padding: 0; margin: 0; }
 .roles .legend { margin-bottom: 8px; }
+.roles .error { grid-column: 1 / -1; margin: 0; }
 .role { position: relative; }
 .role input { position: absolute; opacity: 0; }
 .role span {

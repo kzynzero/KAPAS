@@ -4,8 +4,8 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Product · KAPAS</title>
-  <meta name="description" content="See product details and send an order request to a Marinduque artisan.">
-  <link rel="icon" href="assets/logo.png" type="image/svg+xml">
+  <meta name="description" content="See product details and photos, then send an order or made-to-order request to a Marinduque artisan or business.">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Fraunces:opsz,wght@9..144,600;9..144,700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles/main.css">
@@ -29,7 +29,7 @@
         <section class="panel order-box" id="orderBox" aria-labelledby="orderTitle">
           <div class="order-box__head">
             <h2 id="orderTitle">Send an order request</h2>
-            <p class="hint">The seller will contact you to confirm.</p>
+            <p class="hint" id="orderLead">The seller will contact you to confirm.</p>
           </div>
           <div class="order-box__body">
             <div class="okbox" id="done" role="status"></div>
@@ -45,12 +45,14 @@
                 </div>
                 <p class="error" id="err-quantity"></p></div>
               <div class="field"><label for="pickupDate">Preferred pickup date <span class="hint">(optional)</span></label><input id="pickupDate" name="pickupDate" type="date" aria-describedby="err-pickupDate"><p class="error" id="err-pickupDate"></p></div>
-              <div class="field span-2"><label for="notes">Notes <span class="hint">(optional)</span></label><textarea id="notes" name="notes" rows="3" maxlength="300" aria-describedby="err-notes" placeholder="Size, colour, or anything the maker should know"></textarea><p class="error" id="err-notes"></p></div>
+              <div class="field span-2"><label for="notes">Notes <span class="hint">(optional)</span></label><textarea id="notes" name="notes" rows="3" maxlength="300" aria-describedby="err-notes" placeholder="Size, colour, design, or anything the maker should know"></textarea><p class="error" id="err-notes"></p></div>
               <div class="span-2 order-box__total"><span>Estimated total</span><strong id="total">₱0</strong></div>
               <p class="notice span-2" id="payNote">Payment and delivery are arranged directly with the seller. KAPAS does not process payments.</p>
               <button class="btn btn--gold btn--lg btn--block span-2" type="submit" id="sendBtn">Send request</button>
             </form>
             <p id="ownNote" class="notice" hidden><span>This is your own product. Edit it under <a href="products.html">Products</a>.</span></p>
+            <p id="guestNote" class="notice" hidden><span>Ordering needs a Customer (Buyer) account. <a href="login.html" id="guestSignIn">Sign in</a> or <a href="login.html#create-customer" id="guestCreate">create a customer account</a>.</span></p>
+            <p id="sellerNote" class="notice" hidden><span>You are signed in with an Artisan/Business (Seller) account. Seller accounts cannot place orders. To order, sign out and sign in with a Customer (Buyer) account.</span></p>
           </div>
         </section>
       </div>

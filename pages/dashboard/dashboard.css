@@ -1,10 +1,11 @@
 /* Dashboard */
-.stats { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 16px; }
+.stats { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 16px; }
 .stats .stat { animation: fade-up 0.4s var(--ease) both; }
 .stats .stat:nth-child(2) { animation-delay: 0.04s; }
 .stats .stat:nth-child(3) { animation-delay: 0.08s; }
 .stats .stat:nth-child(4) { animation-delay: 0.12s; }
 .stats .stat:nth-child(5) { animation-delay: 0.16s; }
+.stats .stat:nth-child(6) { animation-delay: 0.2s; }
 
 .dash-grid { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: 20px; align-items: start; }
 .dash-empty { margin: 16px; padding: 32px 16px; }
