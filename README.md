@@ -46,36 +46,6 @@ Excluded, as in the paper: online payments, delivery tracking, a mobile app, acc
 
 The justification and comparison for these choices is in the project documentation.
 
-## Run it in CodeSandbox
-
-KAPAS is a static site with no build step, no backend server and **no environment variables**.
-
-1. Go to codesandbox.io, choose **Import**, then upload this folder or import its GitHub repository.
-2. CodeSandbox reads `.codesandbox/tasks.json`: it runs `npm install`, then starts `npm start`.
-3. The preview opens on port **3000**. If it does not open by itself, open the **Start KAPAS** task and click the port 3000 preview.
-4. To run the tests, open a terminal and run `npm test` (or start the **Run tests** task).
-
-`serve.json` turns off "clean URLs" so pages keep their `.html` addresses. Sign-in redirects such as `login.html?next=orders.html` depend on that.
-
-## Run it locally
-
-You need Node.js 18 or newer. Browsers block IndexedDB on `file://` pages, so serve the folder instead of double-clicking `index.html`.
-
-```
-npm install
-npm start
-```
-
-Then open http://localhost:3000.
-
-To run the tests:
-
-```
-npm test
-```
-
-Each web address keeps its own data. Accounts and products made on `localhost` do not appear on the CodeSandbox address, and the other way round. Use Export backup and Restore from backup on the dashboard to move data between them.
-
 ## Project structure
 
 ```
