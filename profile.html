@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Seller profile · KAPAS</title>
+  <meta name="description" content="Manage your KAPAS Artisan/Business (Seller) profile.">
+  <meta name="robots" content="noindex">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Fraunces:opsz,wght@9..144,600;9..144,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles/main.css">
+  <link rel="stylesheet" href="pages/profile/profile.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to main content</a>
+<div class="app-shell">
+  <header class="mobilebar" id="mobilebar"></header>
+  <aside class="sidebar" id="sidebar" aria-label="Sidebar"></aside>
+  <main class="content" id="main">
+    <header class="page-header">
+      <div>
+        <span class="eyebrow" id="role"></span>
+        <h1>Seller profile</h1>
+        <p>This is how customers see you in the catalog and how they reach you about orders.</p>
+      </div>
+    </header>
+
+    <section class="panel profile-panel" aria-labelledby="profileTitle">
+      <h2 class="sr" id="profileTitle">Your details</h2>
+      <form id="profile" class="panel__body" novalidate>
+        <div class="alert" id="formError" role="alert"></div>
+        <div class="form-grid">
+          <div class="field"><label for="name">Full name</label><input id="name" name="name" autocomplete="name" aria-describedby="err-name"><p class="error" id="err-name"></p></div>
+          <div class="field"><label for="businessName">Shop or business name <span class="hint">(optional)</span></label><input id="businessName" name="businessName" autocomplete="organization" aria-describedby="hint-biz err-businessName"><p class="hint" id="hint-biz">Shown as the maker in the catalog. Leave empty to show your full name.</p><p class="error" id="err-businessName"></p></div>
+          <div class="field"><label for="email">Email</label><input id="email" type="email" readonly aria-describedby="hint-email"><p class="hint" id="hint-email">Used to sign in. It cannot be changed here.</p></div>
+          <div class="field"><label for="phone">Mobile number <span class="hint">(optional)</span></label><input id="phone" name="phone" type="tel" autocomplete="tel" placeholder="0917 123 4567" aria-describedby="err-phone"><p class="error" id="err-phone"></p></div>
+        </div>
+        <div class="profile-foot"><button class="btn btn--gold" type="submit" id="saveBtn">Save profile</button></div>
+      </form>
+    </section>
+  </main>
+</div>
+<script type="module" src="pages/profile/profile.js"></script>
+</body>
+</html>

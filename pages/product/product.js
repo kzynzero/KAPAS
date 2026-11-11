@@ -1,6 +1,6 @@
-// Product detail and the public order-request form.
+// Product detail and the order-request form. Anyone can view; only Customer (Buyer) accounts can order.
 import { store } from '../../js/store.js';
-import { current } from '../../js/auth.js';
+import { current, authReady, isSeller, isCustomer } from '../../js/auth.js';
 import { siteHeader, siteFooter } from '../../js/layout.js';
 import { esc, peso, toast, clearErrors, showErrors, $, emptyState } from '../../js/ui.js';
 import { icon } from '../../js/icons.js';
@@ -11,12 +11,18 @@ siteFooter();
 $('back').insertAdjacentHTML('afterbegin', icon('arrowLeft', 18));
 $('payNote').insertAdjacentHTML('afterbegin', icon('info', 18));
 $('ownNote').insertAdjacentHTML('afterbegin', icon('info', 18));
+$('guestNote').insertAdjacentHTML('afterbegin', icon('user', 18));
+$('sellerNote').insertAdjacentHTML('afterbegin', icon('info', 18));
 $('sendBtn').insertAdjacentHTML('afterbegin', icon('send', 18));
  
 const id = new URLSearchParams(location.search).get('id');
+await authReady();
 const form = $('oform'), me = current();
 form.pickupDate.min = new Date().toISOString().slice(0, 10);
-if (me && me.role === 'business') { form.customerName.value = me.businessName || me.name; form.contact.value = me.phone || me.email; }
+if (isCustomer(me)) { form.customerName.value = me.name; form.contact.value = me.phone || me.email; }
+// After signing in, come back to this product.
+const back = encodeURIComponent('product.html?id=' + (new URLSearchParams(location.search).get('id') || ''));
+$('guestSignIn').href = 'login.html?next=' + back; $('guestCreate').href = 'login.html?next=' + back + '#create-customer';
  
 let shown = 0, shownId = null; // which photo is on show
 function renderMedia(p) {
@@ -56,7 +62,14 @@ function render() {
   document.title = p.name + ' · KAPAS';
   $('orderBox').hidden = !p.published && !own;
   $('ownNote').hidden = !own;
-  form.hidden = own;
+  $('sellerNote').hidden = own || !isSeller(me);
+  $('guestNote').hidden = !!me;
+  form.hidden = !isCustomer(me);
+  const mto = p.quantity === 0;
+  $('orderTitle').textContent = mto ? 'Send a made-to-order request' : 'Send an order request';
+  $('orderLead').textContent = mto
+    ? 'This piece is made to order. Describe what you want in the notes and the seller will confirm the timeline.'
+    : 'The seller will contact you to confirm. If you ask for more than is in stock, it becomes a made-to-order request.';
  
   renderMedia(p);
  
@@ -85,7 +98,8 @@ form.addEventListener('submit', async (e) => {
   const btn = $('sendBtn'); btn.disabled = true;
   try {
     const o = await placeOrder(me, { ...Object.fromEntries(new FormData(form)), productId: id });
-    $('done').textContent = 'Request sent to ' + ownerName(o.sellerId) + '. They will contact you at ' + o.contact + '.';
+    $('done').innerHTML = esc((o.madeToOrder ? 'Made-to-order request' : 'Order request') + ' sent to ' + ownerName(o.sellerId) + '. They will contact you at ' + o.contact + '. ') +
+      '<a href="customer.html">Track it in My orders</a>';
     form.quantity.value = 1; form.notes.value = ''; form.pickupDate.value = ''; updateTotal();
     toast('Order request sent');
   } catch (err) { err instanceof FormError ? showErrors(form, err.fields) : ($('formError').textContent = err.message); }
