@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Materials · KAPAS</title>
+  <meta name="description" content="Track your KAPAS materials inventory.">
+  <meta name="robots" content="noindex">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Fraunces:opsz,wght@9..144,600;9..144,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles/main.css">
+  <link rel="stylesheet" href="pages/materials/materials.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to main content</a>
+<div class="app-shell">
+  <header class="mobilebar" id="mobilebar"></header>
+  <aside class="sidebar" id="sidebar" aria-label="Sidebar"></aside>
+  <main class="content" id="main">
+    <header class="page-header">
+      <div>
+        <span class="eyebrow">Production</span>
+        <h1>Materials Inventory</h1>
+        <p>Track raw materials, get low-stock warnings and record finished pieces.</p>
+      </div>
+      <div class="page-header__actions">
+        <button class="btn btn--outline" type="button" id="prodOpen">Record finished pieces</button>
+        <button class="btn btn--gold" type="button" id="addBtn">Add material</button>
+      </div>
+    </header>
+
+    <section class="mat-summary" aria-label="Inventory summary">
+      <button type="button" class="stat stat--btn" data-filter=""><span class="stat__icon stat__icon--navy" data-icon="layers"></span><span class="stat__value" id="nAll">0</span><span class="stat__label">Materials tracked</span></button>
+      <button type="button" class="stat stat--btn" data-filter="low"><span class="stat__icon stat__icon--gold" data-icon="trendDown"></span><span class="stat__value" id="nLow">0</span><span class="stat__label">Running low</span></button>
+      <button type="button" class="stat stat--btn" data-filter="out"><span class="stat__icon stat__icon--danger" data-icon="alert"></span><span class="stat__value" id="nOut">0</span><span class="stat__label">Out of stock</span></button>
+    </section>
+
+    <form class="toolbar" role="search" aria-label="Filter materials" onsubmit="return false">
+      <div class="search"><label class="sr" for="q">Search materials</label><span data-icon="search"></span><input class="control" type="search" id="q" placeholder="Search materials…" autocomplete="off"></div>
+      <label class="sr" for="fState">Filter by stock level</label>
+      <select class="control" id="fState"><option value="">All stock levels</option><option value="ok">In stock</option><option value="low">Running low</option><option value="out">Out of stock</option></select>
+      <label class="sr" for="sort">Sort by</label>
+      <select class="control" id="sort"><option value="name">Name A–Z</option><option value="stockAsc">Amount: lowest first</option><option value="newest">Newest first</option></select>
+    </form>
+
+    <section class="panel" aria-labelledby="listTitle">
+      <h2 class="sr" id="listTitle">Your materials</h2>
+      <div class="table-wrap">
+        <table class="table table--stack">
+          <thead><tr><th scope="col">Material</th><th scope="col" class="num">On hand</th><th scope="col" class="num">Reorder at</th><th scope="col">Status</th><th scope="col">Adjust stock</th><th scope="col"><span class="sr">Actions</span></th></tr></thead>
+          <tbody id="list"></tbody>
+        </table>
+      </div>
+      <div class="empty table-empty" id="empty" hidden></div>
+    </section>
+
+    <dialog class="modal modal--sm" id="materialDlg" aria-labelledby="formTitle">
+      <form id="mform" novalidate>
+        <div class="modal__head"><div><h2 id="formTitle">Add a material</h2><p>Wood, paint, abaca and other supplies.</p></div><button type="button" class="icon-btn" data-close aria-label="Close" data-icon="close"></button></div>
+        <div class="modal__body">
+          <div class="alert" id="formError" role="alert"></div>
+          <div class="form-grid">
+            <div class="field span-2"><label for="name">Material</label><input id="name" name="name" aria-describedby="err-name"><p class="error" id="err-name"></p></div>
+            <div class="field span-2"><label for="unit">Unit</label><input id="unit" name="unit" list="units" placeholder="pcs, kg, liters…" aria-describedby="err-unit"><datalist id="units"><option value="pcs"><option value="kg"><option value="liters"><option value="sheets"><option value="meters"></datalist><p class="error" id="err-unit"></p></div>
+            <div class="field"><label for="quantity">Amount on hand</label><input id="quantity" name="quantity" type="number" min="0" step="any" value="0" inputmode="decimal" aria-describedby="err-quantity"><p class="error" id="err-quantity"></p></div>
+            <div class="field"><label for="reorderLevel">Reorder level</label><input id="reorderLevel" name="reorderLevel" type="number" min="0" step="any" value="0" inputmode="decimal" aria-describedby="hint-r err-reorderLevel"><p class="error" id="err-reorderLevel"></p></div>
+            <p class="hint span-2" id="hint-r">You are warned when the amount falls to this level or below.</p>
+          </div>
+        </div>
+        <div class="modal__foot"><button class="btn btn--outline" type="button" id="cancel" data-close>Cancel</button><button class="btn" type="submit" id="saveBtn">Save material</button></div>
+      </form>
+    </dialog>
+
+    <dialog class="modal modal--sm" id="prodDlg" aria-labelledby="prodTitle">
+      <form id="pform" novalidate>
+        <div class="modal__head"><div><h2 id="prodTitle">Record finished pieces</h2><p>Adds the pieces to a product's stock, so the catalog shows them right away. You can take the material you used out of stock at the same time.</p></div><button type="button" class="icon-btn" data-close aria-label="Close" data-icon="close"></button></div>
+        <div class="modal__body">
+          <div class="alert" id="prodError" role="alert"></div>
+          <div class="form-grid">
+            <div class="field span-2"><label for="productId">Product</label><select id="productId" name="productId" aria-describedby="err-productId"></select><p class="error" id="err-productId"></p></div>
+            <div class="field span-2"><label for="made">Pieces finished</label><input id="made" name="made" type="number" min="1" step="1" inputmode="numeric" aria-describedby="err-made"><p class="error" id="err-made"></p></div>
+            <div class="field"><label for="materialId">Material used <span class="hint">(optional)</span></label><select id="materialId" name="materialId"></select></div>
+            <div class="field"><label for="used">Amount used</label><input id="used" name="used" type="number" min="0" step="any" inputmode="decimal" aria-describedby="err-used"><p class="error" id="err-used"></p></div>
+          </div>
+          <p class="notice" id="noProducts" hidden><span>Add a product first, then you can record finished pieces. <a href="products.html#new">Go to Products</a></span></p>
+        </div>
+        <div class="modal__foot"><button class="btn btn--outline" type="button" data-close>Close</button><button class="btn" type="submit" id="prodBtn">Record pieces</button></div>
+      </form>
+    </dialog>
+  </main>
+</div>
+<script type="module" src="pages/materials/materials.js"></script>
+</body>
+</html>

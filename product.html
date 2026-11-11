@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Product · KAPAS</title>
+  <meta name="description" content="See product details and send an order request to a Marinduque artisan.">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Fraunces:opsz,wght@9..144,600;9..144,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles/main.css">
+  <link rel="stylesheet" href="pages/product/product.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to main content</a>
+  <header id="site-header"></header>
+
+  <main id="main" class="container product-page">
+    <nav class="crumbs" aria-label="Breadcrumb"><a href="index.html#catalog" id="back">Back to catalog</a></nav>
+
+    <div id="notFound" hidden></div>
+
+    <div class="detail" id="detail" hidden>
+      <div class="detail__media" id="media"></div>
+
+      <div class="detail__side">
+        <div id="info"></div>
+
+        <section class="panel order-box" id="orderBox" aria-labelledby="orderTitle">
+          <div class="order-box__head">
+            <h2 id="orderTitle">Send an order request</h2>
+            <p class="hint">The seller will contact you to confirm.</p>
+          </div>
+          <div class="order-box__body">
+            <div class="okbox" id="done" role="status"></div>
+            <div class="alert" id="formError" role="alert"></div>
+            <form id="oform" class="form-grid" novalidate>
+              <div class="field"><label for="customerName">Your name</label><input id="customerName" name="customerName" autocomplete="name" aria-describedby="err-customerName"><p class="error" id="err-customerName"></p></div>
+              <div class="field"><label for="contact">Mobile number or email</label><input id="contact" name="contact" autocomplete="tel" aria-describedby="err-contact"><p class="error" id="err-contact"></p></div>
+              <div class="field"><label for="quantity">Quantity</label>
+                <div class="qty">
+                  <button type="button" class="icon-btn" data-step="-1" aria-label="Decrease quantity">−</button>
+                  <input id="quantity" name="quantity" type="number" min="1" max="999" value="1" inputmode="numeric" aria-describedby="err-quantity">
+                  <button type="button" class="icon-btn" data-step="1" aria-label="Increase quantity">+</button>
+                </div>
+                <p class="error" id="err-quantity"></p></div>
+              <div class="field"><label for="pickupDate">Preferred pickup date <span class="hint">(optional)</span></label><input id="pickupDate" name="pickupDate" type="date" aria-describedby="err-pickupDate"><p class="error" id="err-pickupDate"></p></div>
+              <div class="field span-2"><label for="notes">Notes <span class="hint">(optional)</span></label><textarea id="notes" name="notes" rows="3" maxlength="300" aria-describedby="err-notes" placeholder="Size, colour, or anything the maker should know"></textarea><p class="error" id="err-notes"></p></div>
+              <div class="span-2 order-box__total"><span>Estimated total</span><strong id="total">₱0</strong></div>
+              <p class="notice span-2" id="payNote">Payment and delivery are arranged directly with the seller. KAPAS does not process payments.</p>
+              <button class="btn btn--gold btn--lg btn--block span-2" type="submit" id="sendBtn">Send request</button>
+            </form>
+            <p id="ownNote" class="notice" hidden><span>This is your own product. Edit it under <a href="products.html">Products</a>.</span></p>
+          </div>
+        </section>
+      </div>
+    </div>
+  </main>
+
+  <footer id="site-footer"></footer>
+  <script type="module" src="pages/product/product.js"></script>
+</body>
+</html>

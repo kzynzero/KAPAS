@@ -1,0 +1,27 @@
+/* Materials inventory */
+.mat-summary { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+.stat--btn { font: inherit; text-align: left; cursor: pointer; }
+.stat--btn:hover { transform: translateY(-3px); box-shadow: var(--shadow); border-color: var(--field-line); }
+.stat--btn[aria-pressed="true"] { border-color: var(--navy); box-shadow: 0 0 0 2px var(--navy); }
+
+.table-empty { margin: 20px; }
+.mat-icon { color: var(--ok); background: var(--ok-bg); }
+.mat-icon--low { color: var(--warn); background: var(--warn-bg); }
+.mat-icon--out { color: var(--danger); background: var(--danger-bg); }
+.mrow--out td:first-child { box-shadow: inset 3px 0 0 var(--danger); }
+.mrow--low td:first-child { box-shadow: inset 3px 0 0 var(--gold); }
+
+.adjust { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; min-width: 250px; }
+.adjust .control { width: 96px; min-height: 38px; padding: 6px 10px; }
+.adjust .error { flex-basis: 100%; }
+
+@media (max-width: 720px) {
+  .mat-summary { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+  .mat-summary .stat { padding: 14px; }
+  .mat-summary .stat__icon { width: 34px; height: 34px; margin-bottom: 6px; }
+  .mat-summary .stat__value { font-size: 1.5rem; }
+  .mat-summary .stat__label { font-size: 0.78rem; }
+  .table--stack td[data-label="Adjust stock"] { flex-direction: column; align-items: stretch; }
+  .adjust { min-width: 0; justify-content: flex-end; }
+  .adjust .control { flex: 1; }
+}

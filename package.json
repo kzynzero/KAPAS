@@ -1,0 +1,21 @@
+{
+  "name": "kapas",
+  "version": "1.1.0",
+  "private": true,
+  "description": "Digital production and order management for Moriones-inspired artisans in Marinduque.",
+  "type": "module",
+  "scripts": {
+    "start": "serve . --listen tcp://0.0.0.0:3000 --no-clipboard",
+    "dev": "npm start",
+    "test": "node --test test/core.test.mjs test/filters.test.mjs"
+  },
+  "dependencies": {
+    "serve": "^14.2.4"
+  },
+  "devDependencies": {
+    "fake-indexeddb": "^6.0.0"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

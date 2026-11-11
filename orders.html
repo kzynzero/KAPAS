@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Orders · KAPAS</title>
+  <meta name="description" content="Manage KAPAS order requests.">
+  <meta name="robots" content="noindex">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Fraunces:opsz,wght@9..144,600;9..144,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles/main.css">
+  <link rel="stylesheet" href="pages/orders/orders.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to main content</a>
+<div class="app-shell">
+  <header class="mobilebar" id="mobilebar"></header>
+  <aside class="sidebar" id="sidebar" aria-label="Sidebar"></aside>
+  <main class="content" id="main">
+    <header class="page-header">
+      <div>
+        <span class="eyebrow">Customers</span>
+        <h1>Orders</h1>
+        <p>Requests for your products appear here. Move each order along as you work on it. Completing an order takes its items out of stock.</p>
+      </div>
+    </header>
+
+    <form class="toolbar" role="search" aria-label="Filter orders" onsubmit="return false" id="orderTools">
+      <div class="search"><label class="sr" for="q">Search orders</label><span data-icon="search"></span><input class="control" type="search" id="q" placeholder="Customer, contact or product…" autocomplete="off"></div>
+      <label class="sr" for="sort">Sort by</label>
+      <select class="control" id="sort"><option value="newest">Newest first</option><option value="oldest">Oldest first</option><option value="pickup">Pickup date</option></select>
+      <span class="spacer"></span>
+      <p class="hint" id="count" aria-live="polite"></p>
+    </form>
+
+    <div class="board" id="board"></div>
+    <div class="empty" id="empty"></div>
+
+    <section class="panel" id="placed" hidden aria-labelledby="placedTitle">
+      <div class="panel__head"><h2 id="placedTitle">Orders you placed</h2><span class="hint">Requests you sent to other sellers</span></div>
+      <div class="table-wrap">
+        <table class="table table--stack">
+          <thead><tr><th scope="col">Items</th><th scope="col">Seller</th><th scope="col" class="num">Total</th><th scope="col">Sent</th><th scope="col">Status</th></tr></thead>
+          <tbody id="placedList"></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+</div>
+<script type="module" src="pages/orders/orders.js"></script>
+</body>
+</html>

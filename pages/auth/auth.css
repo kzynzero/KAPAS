@@ -1,0 +1,78 @@
+/* Sign in and create account */
+.auth { display: grid; grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr); min-height: 100vh; }
+
+.auth__art {
+  position: sticky; top: 0; height: 100vh;
+  display: flex; flex-direction: column; justify-content: space-between; gap: 28px;
+  padding: 36px 44px 44px; background: var(--navy); color: var(--on-dark); overflow: hidden;
+}
+.auth__art .brand { color: var(--cream); }
+.auth__img {
+  flex: 1; min-height: 0;
+  display: grid; place-items: center;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: minmax(0, 1fr);   /* the row can no longer grow past the available space */
+}
+.auth__img img {
+  width: auto; height: 100%; max-height: 560px; max-width: 100%; min-height: 0;
+  aspect-ratio: 572 / 900;            /* the photo's real proportions, so no cropping */
+  object-fit: cover;
+  /* top corners = a true semicircle; bottom corners = soft rounded */
+  border-radius: 50% 50% var(--radius-xl) var(--radius-xl) / 32% 32% var(--radius-xl) var(--radius-xl);
+  border: 10px solid var(--navy-700);
+  box-shadow: 0 30px 80px -30px rgba(0, 0, 0, 0.7); animation: fade-up 0.6s var(--ease) both;
+}
+.auth__tagline { font-family: var(--font-display); font-size: 1.7rem; line-height: 1.2; color: var(--gold); margin-bottom: 10px; }
+.auth__quote p:last-child { color: var(--on-dark-muted); max-width: 40ch; }
+
+.auth__main { display: flex; align-items: center; justify-content: center; padding: 48px 24px; }
+.auth__card { width: 100%; max-width: 520px; display: flex; flex-direction: column; gap: 22px; animation: fade-up 0.45s var(--ease) both; }
+.auth__mobile-brand { display: none; color: var(--navy); }
+.auth__head h1 { font-size: 2.2rem; }
+.auth__head p { margin-top: 6px; font-size: 1rem; }
+.auth__switch { text-align: center; }
+.auth__back { text-align: center; }
+.auth__back a { display: inline-flex; align-items: center; gap: 6px; color: var(--muted); font-weight: 500; }
+
+/* Account type cards */
+.roles { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; border: 0; padding: 0; margin: 0; }
+.roles .legend { margin-bottom: 8px; }
+.role { position: relative; }
+.role input { position: absolute; opacity: 0; }
+.role span {
+  display: flex; flex-direction: column; gap: 4px; height: 100%;
+  padding: 14px; border: 2px solid var(--line); border-radius: var(--radius-lg); background: var(--surface);
+  cursor: pointer; transition: border-color 0.18s, background-color 0.18s, transform 0.18s var(--ease);
+}
+.role span:hover { border-color: var(--field-line); transform: translateY(-1px); }
+.role svg { color: var(--crimson); margin-bottom: 4px; }
+.role b { font-size: 1rem; }
+.role small { color: var(--muted); font-size: 0.84rem; line-height: 1.4; }
+.role input:checked + span { border-color: var(--crimson); background: #fbefe6; box-shadow: 0 0 0 3px color-mix(in srgb, var(--crimson) 12%, transparent); }
+.role input:focus-visible + span { outline: 3px solid var(--gold); outline-offset: 2px; }
+
+/* Password with show/hide */
+.pw { position: relative; }
+.pw input { padding-right: 48px !important; }
+.pw__toggle { position: absolute; right: 6px; top: 50%; transform: translateY(-50%); display: grid; place-items: center; width: 36px; height: 36px; border: 0; border-radius: 8px; background: transparent; color: var(--muted); cursor: pointer; }
+.pw__toggle:hover { color: var(--navy); background: var(--cream); }
+
+@media (max-width: 960px) {
+  .auth { grid-template-columns: 1fr; }
+  .auth__art { display: none; }
+  .auth__mobile-brand { display: inline-flex; }
+  .auth__main { align-items: flex-start; padding: 32px 18px 48px; }
+}
+@media (max-width: 480px) { .roles { grid-template-columns: 1fr; } }
+
+@media (max-height: 520px) {
+  .auth__art { padding: 24px 32px; gap: 16px; }
+  .auth__quote p:last-child { display: none; }  /* drop the long paragraph, keep the tagline */
+}
+@media (max-height: 700px) {
+  .auth__art { padding: 24px 44px 28px; gap: 16px; }
+  .auth__tagline { font-size: 1.45rem; margin-bottom: 6px; }
+}
+@media (max-height: 520px) {
+  .auth__quote p:last-child { display: none; }  /* keep the tagline, drop the long paragraph */
+}

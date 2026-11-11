@@ -1,0 +1,28 @@
+/* Product management */
+.table-empty { margin: 20px; }
+.table-foot { padding: 12px 24px; border-top: 1px solid var(--line); }
+.table-foot:empty { display: none; }
+.table .switch .hint { min-width: 48px; }
+ 
+ 
+.product-form .field--tall { grid-column: 2; grid-row: 1 / span 2; }
+.product-form .field--tall textarea { flex: 1; }
+#photo { position: absolute; }
+ 
+@media (max-width: 640px) {
+  .product-form .field--tall { grid-column: auto; grid-row: auto; }
+}
+ 
+/* Photo thumbnails in the product dialog */
+.photo-grid { list-style: none; margin: 12px 0 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(96px, 1fr)); gap: 10px; }
+.photo-thumb { position: relative; aspect-ratio: 1; border-radius: var(--radius-lg); overflow: hidden; border: 2px solid var(--line); background: var(--surface); cursor: grab; }
+.photo-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.photo-thumb:first-child { border-color: var(--gold); }
+.photo-thumb.is-dragging { opacity: 0.4; }
+.photo-thumb__badge, .photo-thumb__cover { position: absolute; left: 6px; bottom: 6px; padding: 2px 8px; border-radius: 999px; font: inherit; font-size: 0.72rem; font-weight: 700; }
+.photo-thumb__badge { background: var(--gold); color: var(--navy); }
+.photo-thumb__cover { border: 0; background: rgba(0, 0, 0, 0.65); color: #fff; cursor: pointer; opacity: 0; transition: opacity 0.15s; }
+.photo-thumb:hover .photo-thumb__cover, .photo-thumb__cover:focus-visible { opacity: 1; }
+@media (hover: none) { .photo-thumb__cover { opacity: 1; } }
+.photo-thumb__remove { position: absolute; top: 6px; right: 6px; width: 26px; height: 26px; display: grid; place-items: center; border: 0; border-radius: 50%; background: rgba(0, 0, 0, 0.65); color: #fff; cursor: pointer; }
+.photo-thumb__remove:hover { background: var(--crimson); }

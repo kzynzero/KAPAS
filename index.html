@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>KAPAS · Moriones-inspired crafts from Marinduque</title>
+  <meta name="description" content="Browse handmade Morion masks and Moriones-inspired crafts from Marinduque artisans and send an order request straight to the maker.">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Fraunces:opsz,wght@9..144,600;9..144,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles/main.css">
+  <link rel="stylesheet" href="pages/storefront/storefront.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to main content</a>
+  <header id="site-header"></header>
+
+  <main id="main">
+    <section class="hero">
+      <div class="container hero__inner">
+        <div class="hero__copy reveal">
+          <span class="eyebrow">Tourism &amp; cultural crafts · Marinduque</span>
+          <h1>Moriones-inspired crafts, made by local hands.</h1>
+          <p class="hero__lead">Browse what Marinduque artisans and shops have made. Send an order request and the seller will contact you to arrange payment and pickup.</p>
+          <div class="hero__cta">
+            <a class="btn btn--gold btn--lg" href="#catalog">Browse the catalog <span id="heroArrow"></span></a>
+            <a class="btn btn--outline btn--lg" href="login.html#create">Sell your crafts</a>
+          </div>
+          <dl class="hero__stats" aria-label="Catalog at a glance">
+            <div><dt>Products listed</dt><dd id="sProducts">0</dd></div>
+            <div><dt>Makers</dt><dd id="sMakers">0</dd></div>
+            <div><dt>Categories</dt><dd id="sCats">0</dd></div>
+          </dl>
+        </div>
+        <figure class="hero__art reveal">
+          <div class="hero__frame"><img src="assets/morion-mask.webp" width="572" height="900" alt="A hand-carved and painted Morion mask with a golden helmet and abaca plume"></div>
+          <figcaption><span id="heroSpark"></span> Hand-carved Morion mask</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section class="steps container" aria-label="How ordering works">
+      <article class="step"><span class="step__num">1</span><div><h2>Browse</h2><p>Search masks, carvings and souvenirs by name, maker or category.</p></div></article>
+      <article class="step"><span class="step__num">2</span><div><h2>Send a request</h2><p>Pick a quantity and a pickup date. No account needed.</p></div></article>
+      <article class="step"><span class="step__num">3</span><div><h2>Meet the maker</h2><p>The seller contacts you to confirm, then you pay and pick up in person.</p></div></article>
+    </section>
+
+    <section class="catalog container" id="catalog" aria-labelledby="catalogTitle">
+      <div class="catalog__head">
+        <div>
+          <span class="eyebrow">The catalog</span>
+          <h2 id="catalogTitle">Find something made with care</h2>
+        </div>
+        <p id="count" class="hint" aria-live="polite"></p>
+      </div>
+
+      <form class="toolbar catalog__toolbar" role="search" aria-label="Filter products" onsubmit="return false">
+        <div class="search">
+          <label class="sr" for="q">Search products</label>
+          <span id="searchIcon"></span>
+          <input class="control" id="q" type="search" placeholder="Mask, carving, souvenir, maker…" autocomplete="off">
+        </div>
+        <label class="sr" for="cat">Category</label>
+        <select class="control" id="cat"></select>
+        <label class="sr" for="sort">Sort by</label>
+        <select class="control" id="sort">
+          <option value="newest">Newest first</option>
+          <option value="priceAsc">Price: low to high</option>
+          <option value="priceDesc">Price: high to low</option>
+          <option value="name">Name: A to Z</option>
+        </select>
+      </form>
+      <div class="chips" id="chips" role="group" aria-label="Quick category filter"></div>
+
+      <ul id="grid" class="product-grid"></ul>
+      <div id="empty" class="empty" hidden></div>
+    </section>
+  </main>
+
+  <footer id="site-footer"></footer>
+  <script type="module" src="pages/storefront/storefront.js"></script>
+</body>
+</html>
