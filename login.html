@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Sign in · KAPAS</title>
-  <meta name="description" content="Sign in or create a KAPAS artisan or business account to manage products, materials and orders.">
+  <meta name="description" content="Sign in or create a KAPAS account: Artisan/Business (Seller) to sell your crafts, or Customer (Buyer) to order them.">
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Fraunces:opsz,wght@9..144,600;9..144,700&display=swap" rel="stylesheet">
@@ -27,7 +27,7 @@
       <a class="brand auth__mobile-brand" href="index.html"><img src="assets/kapas-logo.svg" width="28" height="41" alt=""><span class="brand__name">KAPAS</span></a>
       <header class="auth__head">
         <h1 id="authTitle">Welcome back</h1>
-        <p class="hint" id="authLead">Sign in to manage your products, materials and orders.</p>
+        <p class="hint" id="authLead">Sign in to your seller or customer account.</p>
       </header>
 
       <div class="tabs" role="tablist" aria-label="Account">
@@ -48,12 +48,13 @@
         <div class="alert" role="alert" data-form-error></div>
         <fieldset class="roles">
           <legend class="legend">Account type</legend>
-          <label class="role"><input type="radio" name="role" value="artisan" checked><span><i data-icon="hammer"></i><b>Artisan</b><small>Individual maker managing products, materials and orders.</small></span></label>
-          <label class="role"><input type="radio" name="role" value="business"><span><i data-icon="store"></i><b>Business</b><small>Workshop or souvenir shop. Sell your own products and order from artisans.</small></span></label>
+          <label class="role"><input type="radio" name="role" value="seller" checked aria-describedby="err-role"><span><i data-icon="hammer"></i><b>Artisan/Business (Seller)</b><small>Individual makers, workshops and souvenir shops. Sell products, track materials and handle orders.</small></span></label>
+          <label class="role"><input type="radio" name="role" value="customer" aria-describedby="err-role"><span><i data-icon="user"></i><b>Customer (Buyer)</b><small>Browse crafts, place orders and made-to-order requests, and track them.</small></span></label>
+          <p class="error span-2" id="err-role"></p>
         </fieldset>
         <div class="form-grid">
           <div class="field span-2"><label for="up-name">Full name</label><input id="up-name" name="name" autocomplete="name" aria-describedby="err-name"><p class="error" id="err-name"></p></div>
-          <div class="field span-2" id="biz-field" hidden><label for="up-biz">Business name</label><input id="up-biz" name="businessName" autocomplete="organization" aria-describedby="err-businessName"><p class="error" id="err-businessName"></p></div>
+          <div class="field span-2" id="biz-field"><label for="up-biz">Shop or business name <span class="hint">(optional)</span></label><input id="up-biz" name="businessName" autocomplete="organization" aria-describedby="err-businessName"><p class="error" id="err-businessName"></p></div>
           <div class="field"><label for="up-email">Email</label><input id="up-email" name="email" type="email" autocomplete="email" aria-describedby="err-email"><p class="error" id="err-email"></p></div>
           <div class="field"><label for="up-phone">Mobile number <span class="hint">(optional)</span></label><input id="up-phone" name="phone" type="tel" autocomplete="tel" placeholder="0917 123 4567" aria-describedby="err-phone"><p class="error" id="err-phone"></p></div>
           <div class="field"><label for="up-password">Password</label>
@@ -63,7 +64,7 @@
             <div class="pw"><input id="up-confirm" name="confirm" type="password" autocomplete="new-password" aria-describedby="err-confirm"><button type="button" class="pw__toggle" data-pw="up-confirm" aria-label="Show password"></button></div>
             <p class="error" id="err-confirm"></p></div>
         </div>
-        <p class="hint">Your details are used only to run your KAPAS account and to contact you about orders.</p>
+        <p class="hint">Your details are used only to run your KAPAS account and to contact you about orders. The account type cannot be changed later.</p>
         <button class="btn btn--gold btn--lg btn--block" type="submit">Create account</button>
         <p class="hint auth__switch">Already have an account? <button type="button" class="linkbtn" data-goto="in">Sign in</button></p>
       </form>

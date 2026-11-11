@@ -7,7 +7,7 @@ import { icon } from '../../js/icons.js';
 import { saveMaterial, deleteMaterial, adjustMaterial, recordProduction, materialState, FormError } from '../../js/shop.js';
 import { matches, sortBy } from '../../js/filters.js';
 
-const user = await guard(['artisan', 'business']);
+const user = await guard(['seller']);
 await adminShell('materials.html');
 document.querySelectorAll('[data-icon]').forEach((el) => { el.innerHTML = icon(el.dataset.icon, ['layers', 'trendDown', 'alert'].includes(el.dataset.icon) ? 22 : 18); });
 $('addBtn').insertAdjacentHTML('afterbegin', icon('plus', 18));

@@ -1,0 +1,5 @@
+/* Seller profile */
+.profile-panel { max-width: 820px; }
+.profile-panel .alert { margin-bottom: 16px; }
+.profile-foot { display: flex; justify-content: flex-end; margin-top: 22px; }
+.field input[readonly] { background: var(--surface-soft); color: var(--muted); }

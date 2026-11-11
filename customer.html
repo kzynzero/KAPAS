@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>My orders · KAPAS</title>
+  <meta name="description" content="Your KAPAS Customer (Buyer) dashboard: track orders and made-to-order requests and manage your profile.">
+  <meta name="robots" content="noindex">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Fraunces:opsz,wght@9..144,600;9..144,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles/main.css">
+  <link rel="stylesheet" href="pages/customer/customer.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to main content</a>
+  <header id="site-header"></header>
+
+  <main id="main" class="container customer-page">
+    <header class="page-header">
+      <div>
+        <span class="eyebrow" id="role"></span>
+        <h1 id="hello">Welcome</h1>
+        <p>Track your orders and made-to-order requests, and keep your contact details up to date.</p>
+      </div>
+      <div class="page-header__actions"><a class="btn btn--gold" href="index.html#catalog" id="browse">Browse the catalog</a></div>
+    </header>
+
+    <section class="cstats" aria-label="Summary">
+      <button type="button" class="stat stat--btn" data-filter="active"><span class="stat__icon stat__icon--gold" data-icon="inbox"></span><span class="stat__value" id="nActive">0</span><span class="stat__label">Active orders</span></button>
+      <button type="button" class="stat stat--btn" data-filter="ready"><span class="stat__icon" data-icon="box"></span><span class="stat__value" id="nReady">0</span><span class="stat__label">Ready for pickup</span></button>
+      <button type="button" class="stat stat--btn" data-filter="mto"><span class="stat__icon stat__icon--navy" data-icon="tag"></span><span class="stat__value" id="nMto">0</span><span class="stat__label">Made-to-order requests</span></button>
+      <button type="button" class="stat stat--btn" data-filter="completed"><span class="stat__icon stat__icon--ok" data-icon="checkCircle"></span><span class="stat__value" id="nDone">0</span><span class="stat__label">Completed</span></button>
+    </section>
+
+    <div class="cgrid">
+      <section class="panel" aria-labelledby="ordersTitle">
+        <div class="panel__head"><h2 id="ordersTitle">My orders</h2><p class="hint" id="count" aria-live="polite"></p></div>
+        <form class="toolbar corders__tools" role="search" aria-label="Filter my orders" onsubmit="return false" id="orderTools">
+          <div class="search"><label class="sr" for="q">Search my orders</label><span data-icon="search"></span><input class="control" type="search" id="q" placeholder="Product or seller…" autocomplete="off"></div>
+          <label class="sr" for="fView">Show</label>
+          <select class="control" id="fView"><option value="">All orders (history)</option><option value="active">Active orders</option><option value="ready">Ready for pickup</option><option value="mto">Made-to-order requests</option><option value="completed">Completed</option></select>
+        </form>
+        <ul class="corders" id="list"></ul>
+        <div class="empty dash-empty" id="empty" hidden></div>
+      </section>
+
+      <section class="panel" aria-labelledby="profileTitle">
+        <div class="panel__head"><h2 id="profileTitle">My profile</h2></div>
+        <form id="profile" class="panel__body form-stack" novalidate>
+          <div class="alert" id="formError" role="alert"></div>
+          <div class="field"><label for="name">Full name</label><input id="name" name="name" autocomplete="name" aria-describedby="err-name"><p class="error" id="err-name"></p></div>
+          <div class="field"><label for="email">Email</label><input id="email" type="email" readonly aria-describedby="hint-email"><p class="hint" id="hint-email">Used to sign in. It cannot be changed here.</p></div>
+          <div class="field"><label for="phone">Mobile number <span class="hint">(optional)</span></label><input id="phone" name="phone" type="tel" autocomplete="tel" placeholder="0917 123 4567" aria-describedby="err-phone"><p class="error" id="err-phone"></p></div>
+          <p class="hint">Sellers use these details to contact you about your orders.</p>
+          <button class="btn" type="submit" id="saveBtn">Save profile</button>
+        </form>
+      </section>
+    </div>
+  </main>
+
+  <footer id="site-footer"></footer>
+  <script type="module" src="pages/customer/customer.js"></script>
+</body>
+</html>

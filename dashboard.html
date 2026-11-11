@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Dashboard · KAPAS</title>
-  <meta name="description" content="Your KAPAS seller dashboard.">
+  <meta name="description" content="Your KAPAS Artisan/Business (Seller) dashboard.">
   <meta name="robots" content="noindex">
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -33,6 +33,7 @@
     <section class="stats" aria-label="Summary">
       <a class="stat" href="products.html"><span class="stat__icon stat__icon--navy" data-icon="package"></span><span class="stat__value" id="nProducts">0</span><span class="stat__label">Products, <span id="nPublished">0</span> in the catalog</span></a>
       <a class="stat" href="orders.html"><span class="stat__icon stat__icon--gold" data-icon="inbox"></span><span class="stat__value" id="nPending">0</span><span class="stat__label">Pending requests</span></a>
+      <a class="stat" href="orders.html#mto"><span class="stat__icon stat__icon--navy" data-icon="tag"></span><span class="stat__value" id="nMto">0</span><span class="stat__label">Open made-to-order requests</span></a>
       <a class="stat" href="orders.html"><span class="stat__icon" data-icon="hammer"></span><span class="stat__value" id="nMaking">0</span><span class="stat__label">In production or ready</span></a>
       <a class="stat" href="materials.html"><span class="stat__icon stat__icon--danger" data-icon="alert"></span><span class="stat__value" id="nLow">0</span><span class="stat__label">Materials running low</span></a>
       <a class="stat" href="orders.html"><span class="stat__icon stat__icon--ok" data-icon="checkCircle"></span><span class="stat__value" id="nDone">0</span><span class="stat__label">Completed orders</span></a>
@@ -40,7 +41,7 @@
 
     <div class="dash-grid">
       <section class="panel" aria-labelledby="recentTitle">
-        <div class="panel__head"><h2 id="recentTitle">Recent order requests</h2><a class="btn btn--ghost btn--sm" href="orders.html">All orders</a></div>
+        <div class="panel__head"><h2 id="recentTitle">Recent customer orders</h2><a class="btn btn--ghost btn--sm" href="orders.html">All orders</a></div>
         <ul class="feed" id="recent"></ul>
         <div class="empty dash-empty" id="recentEmpty" hidden></div>
       </section>

@@ -3,6 +3,9 @@
 const COLLECTIONS = ['users', 'products', 'materials', 'orders'];
 const IMAGE = /^data:image\/(jpeg|png|webp);base64,/;
 export const MAX_PHOTOS = 6; // photos per product
+// Account types: 'seller' (Artisan/Business) and 'customer' (Buyer). Older backups used 'artisan' and 'business'.
+const LEGACY_SELLER = ['artisan', 'business'];
+const ACCOUNT_ROLES = ['seller', 'customer', ...LEGACY_SELLER];
  
 // Checks a backup file and returns clean collections, or throws an Error that says what is wrong.
 export function parseBackup(raw) {
@@ -17,8 +20,9 @@ export function parseBackup(raw) {
     out[c] = rows.map((r) => {
       if (!r || typeof r !== 'object' || typeof r.id !== 'string' || ids.has(r.id)) throw new Error('The backup has a damaged ' + c + ' record.');
       ids.add(r.id);
-      if (c === 'users' && !(typeof r.email === 'string' && ['artisan', 'business'].includes(r.role) && typeof r.passwordHash === 'string' && typeof r.salt === 'string'))
+      if (c === 'users' && !(typeof r.email === 'string' && ACCOUNT_ROLES.includes(r.role) && typeof r.passwordHash === 'string' && typeof r.salt === 'string'))
         throw new Error('The backup has a damaged account record.');
+      if (c === 'users' && LEGACY_SELLER.includes(r.role)) return { ...r, role: 'seller' }; // old Artisan / Business backups
       if (c === 'products' && Array.isArray(r.images)) {
         const images = r.images.filter((s) => typeof s === 'string' && IMAGE.test(s)).slice(0, MAX_PHOTOS);
         return { ...r, images, image: images[0] || '' };

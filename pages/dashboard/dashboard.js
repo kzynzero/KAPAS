@@ -1,12 +1,12 @@
-// Seller dashboard: live counts, recent requests, low materials, and backup / restore.
+// Seller Dashboard, shared by every Artisan/Business (Seller) account: live counts, recent requests, low materials, and backup / restore.
 import { store } from '../../js/store.js';
-import { guard } from '../../js/auth.js';
+import { guard, roleLabel } from '../../js/auth.js';
 import { adminShell } from '../../js/layout.js';
 import { toast, $, esc, peso, date, confirmDialog, emptyState } from '../../js/ui.js';
 import { icon } from '../../js/icons.js';
 import { STATUSES, materialState } from '../../js/shop.js';
 
-const user = await guard(['artisan', 'business']);
+const user = await guard(['seller']);
 await adminShell('dashboard.html');
 
 document.querySelectorAll('[data-icon]').forEach((el) => { el.innerHTML = icon(el.dataset.icon, 22); });
@@ -16,10 +16,8 @@ $('export').insertAdjacentHTML('afterbegin', icon('download', 18));
 $('importLabel').insertAdjacentHTML('afterbegin', icon('upload', 18));
 
 $('hello').textContent = 'Welcome, ' + (user.businessName || user.name);
-$('role').textContent = user.role === 'business' ? 'Business account' : 'Artisan account';
-$('roleText').textContent = user.role === 'business'
-  ? 'You can sell your own products and send order requests to artisans from the catalog.'
-  : 'Here is how your workshop is doing today.';
+$('role').textContent = roleLabel(user.role) + ' account';
+$('roleText').textContent = 'Here is how your products, materials and customer orders are doing today.';
 
 const label = Object.fromEntries(STATUSES);
 const tone = { pending: 'pill--gold', in_production: 'pill--info', ready: 'pill--warn', completed: 'pill--ok' };
@@ -33,11 +31,12 @@ function render() {
   $('nLow').textContent = mats.filter((m) => m.quantity <= m.reorderLevel).length;
   $('nDone').textContent = os.filter((o) => o.status === 'completed').length;
 
+  $('nMto').textContent = os.filter((o) => o.madeToOrder && o.status !== 'completed').length;
   const recent = os.slice().sort((a, b) => b.createdAt - a.createdAt).slice(0, 5);
   $('recent').innerHTML = recent.map((o) => `<li><a class="feed__row" href="orders.html">
       <span class="feed__icon">${icon('clipboard', 18)}</span>
       <span class="feed__main"><strong>${esc(o.customerName)}</strong><small>${o.items.map((i) => i.qty + ' × ' + esc(i.name)).join(', ')} · ${date(o.createdAt)}</small></span>
-      <span class="feed__end"><b>${peso(o.total)}</b><span class="pill ${tone[o.status]}">${label[o.status]}</span></span></a></li>`).join('');
+      <span class="feed__end">${o.madeToOrder ? '<span class="pill pill--info">Made to order</span>' : ''}<b>${peso(o.total)}</b><span class="pill ${tone[o.status]}">${label[o.status]}</span></span></a></li>`).join('');
   $('recentEmpty').hidden = recent.length > 0;
   $('recentEmpty').innerHTML = emptyState('inbox', 'No requests yet', 'When a customer sends a request from your product page, it appears here.');
 

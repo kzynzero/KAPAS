@@ -20,15 +20,31 @@ async function hash(password, salt) {
     { name: 'PBKDF2', hash: 'SHA-256', salt: fromB64(salt), iterations: 210000 }, key, 256);
   return toB64(bits);
 }
-const publicUser = ({ passwordHash, salt, ...rest }) => rest;
+// Exactly two account types. Artisans and businesses are both sellers: same dashboard, same rights.
+export const ROLES = { seller: 'Artisan/Business (Seller)', customer: 'Customer (Buyer)' };
+const LEGACY_SELLER = ['artisan', 'business']; // older accounts, before the two types were merged
+export const normalizeRole = (r) => (LEGACY_SELLER.includes(r) ? 'seller' : r);
+export const roleLabel = (r) => ROLES[normalizeRole(r)] || 'Unknown account';
+export const isSeller = (u) => !!u && normalizeRole(u.role) === 'seller';
+export const isCustomer = (u) => !!u && normalizeRole(u.role) === 'customer';
+
+const publicUser = ({ passwordHash, salt, ...rest }) => ({ ...rest, role: normalizeRole(rest.role) });
+
+// Rewrites old Artisan and Business accounts as Seller accounts, once, keeping every other detail.
+let migrated = null;
+export function authReady() {
+  return (migrated ||= store.ready.then(async () => {
+    for (const u of store.where('users', (x) => LEGACY_SELLER.includes(x.role))) await store.update('users', u.id, { role: 'seller' });
+  }));
+}
 const startSession = (user) =>
   localStorage.setItem(SESSION_KEY, JSON.stringify({ userId: user.id, expires: Date.now() + SESSION_MS }));
 
 export function validateRegistration(f, existingEmails = []) {
   const e = {};
-  if (!['artisan', 'business'].includes(f.role)) e.role = 'Choose an account type.';
+  if (!Object.hasOwn(ROLES, f.role)) e.role = 'Choose an account type.';
   if ((f.name || '').trim().length < 2) e.name = 'Enter your full name.';
-  if (f.role === 'business' && (f.businessName || '').trim().length < 2) e.businessName = 'Enter your business name.';
+  if ((f.businessName || '').trim().length > 80) e.businessName = 'Keep the shop or business name under 80 characters.';
   const email = (f.email || '').trim().toLowerCase();
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) e.email = 'Enter a valid email address.';
   else if (existingEmails.includes(email)) e.email = 'An account with this email already exists.';
@@ -40,13 +56,13 @@ export function validateRegistration(f, existingEmails = []) {
 }
 
 export async function register(f) {
-  await store.ready;
+  await authReady();
   const errors = validateRegistration(f, store.list('users').map((u) => u.email));
   if (Object.keys(errors).length) throw new ValidationError(errors);
   const salt = toB64(crypto.getRandomValues(new Uint8Array(16)));
   const user = await store.add('users', {
     role: f.role, name: f.name.trim(), email: f.email.trim().toLowerCase(),
-    businessName: f.role === 'business' ? f.businessName.trim() : '', phone: (f.phone || '').trim(),
+    businessName: f.role === 'seller' ? (f.businessName || '').trim() : '', phone: (f.phone || '').trim(),
     salt, passwordHash: await hash(f.password, salt),
   });
   startSession(user);
@@ -54,7 +70,7 @@ export async function register(f) {
 }
 
 export async function login(emailRaw, password) {
-  await store.ready;
+  await authReady();
   const email = (emailRaw || '').trim().toLowerCase();
   const lockKey = 'kapas.lock.' + email;
   const lock = JSON.parse(localStorage.getItem(lockKey) || '{"n":0,"until":0}');
@@ -80,11 +96,31 @@ export function current() {
   } catch { return null; }
 }
 export const logout = () => localStorage.removeItem(SESSION_KEY);
-export const homeFor = () => 'dashboard.html';
+// Sellers land on the Seller Dashboard, customers on the Customer Dashboard.
+export const homeFor = (u) => (isCustomer(u) ? 'customer.html' : 'dashboard.html');
 
-// Call at the top of every protected page: guard(['artisan']) or guard() for any signed-in user.
+// Profile changes. Email, password and account type are not changed here.
+export function checkProfile(f) {
+  const e = {};
+  if ((f.name || '').trim().length < 2) e.name = 'Enter your full name.';
+  if ((f.businessName || '').trim().length > 80) e.businessName = 'Keep the shop or business name under 80 characters.';
+  if (f.phone && !/^[+\d][\d\s-]{6,17}$/.test(f.phone.trim())) e.phone = 'Use digits only, for example 0917 123 4567.';
+  return e;
+}
+export async function updateProfile(user, f) {
+  await authReady();
+  const me = user && store.find('users', user.id);
+  if (!me) throw new Error('Sign in again to change your profile.');
+  const errors = checkProfile(f);
+  if (Object.keys(errors).length) throw new ValidationError(errors);
+  const patch = { name: f.name.trim(), phone: (f.phone || '').trim() };
+  if (isSeller(me)) patch.businessName = (f.businessName || '').trim();
+  return publicUser(await store.update('users', me.id, patch));
+}
+
+// Call at the top of every protected page: guard(['seller']), guard(['customer']) or guard() for any signed-in user.
 export async function guard(roles) {
-  await store.ready;
+  await authReady();
   const user = current();
   if (!user) {
     location.replace('login.html?next=' + encodeURIComponent(location.pathname.split('/').pop() + location.search));

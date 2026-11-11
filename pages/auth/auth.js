@@ -1,5 +1,5 @@
 // Sign in and account creation. Business rules (validation, hashing, sessions) live in js/auth.js.
-import { register, login, current, homeFor, ValidationError } from '../../js/auth.js';
+import { register, login, current, homeFor, authReady, ValidationError } from '../../js/auth.js';
 import { store } from '../../js/store.js';
 import { icon } from '../../js/icons.js';
 import '../../js/ui.js'; // clears field errors as the user types
@@ -7,15 +7,15 @@ import '../../js/ui.js'; // clears field errors as the user types
 document.querySelectorAll('[data-icon]').forEach((i) => { i.outerHTML = icon(i.dataset.icon, 22); });
 document.getElementById('backLink').insertAdjacentHTML('afterbegin', icon('arrowLeft', 16));
 
-await store.ready;
+await authReady();
 const next = new URLSearchParams(location.search).get('next');
 const dest = /^[a-z0-9-]+\.html(\?[\w=&%.-]*)?$/i.test(next || '') ? next : null;
 const go = (user) => location.replace(dest || homeFor(user));
 if (current()) go(current());
 
 const copy = {
-  in: ['Welcome back', 'Sign in to manage your products, materials and orders.'],
-  up: ['Create your account', 'List your crafts, track materials and receive order requests.'],
+  in: ['Welcome back', 'Sign in to your seller or customer account.'],
+  up: ['Create your account', 'Choose Artisan/Business (Seller) to sell your crafts, or Customer (Buyer) to order them.'],
 };
 const tabs = { in: [document.getElementById('tab-in'), document.getElementById('panel-in')],
                up: [document.getElementById('tab-up'), document.getElementById('panel-up')] };
@@ -29,8 +29,12 @@ function show(key) {
 tabs.in[0].onclick = () => show('in');
 tabs.up[0].onclick = () => show('up');
 document.querySelectorAll('[data-goto]').forEach((b) => (b.onclick = () => show(b.dataset.goto)));
-if (location.hash === '#create') show('up');
-window.addEventListener('hashchange', () => { if (location.hash === '#create') show('up'); });
+// login.html#create opens a seller sign-up, login.html#create-customer opens a customer sign-up.
+const fromHash = () => {
+  if (location.hash === '#create' || location.hash === '#create-customer') {
+    show('up'); upForm.elements.role.value = location.hash === '#create-customer' ? 'customer' : 'seller'; syncRole();
+  }
+};
 
 // Show / hide password
 document.querySelectorAll('[data-pw]').forEach((b) => {
@@ -41,9 +45,11 @@ document.querySelectorAll('[data-pw]').forEach((b) => {
 });
 
 const upForm = tabs.up[1];
-upForm.addEventListener('change', () => {
-  document.getElementById('biz-field').hidden = upForm.role.value !== 'business';
-});
+// The shop or business name only applies to sellers.
+function syncRole() { document.getElementById('biz-field').hidden = upForm.elements.role.value !== 'seller'; }
+upForm.addEventListener('change', syncRole);
+syncRole(); fromHash();
+window.addEventListener('hashchange', fromHash);
 
 async function submit(form, action) {
   const btn = form.querySelector('button[type=submit]'), label = btn.textContent;

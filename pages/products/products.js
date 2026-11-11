@@ -6,7 +6,7 @@ import { icon } from '../../js/icons.js';
 import { saveProduct, deleteProduct, FormError, imagesOf, MAX_PHOTOS } from '../../js/shop.js';
 import { matches, sortBy, categoriesOf } from '../../js/filters.js';
  
-const user = await guard(['artisan', 'business']);
+const user = await guard(['seller']);
 await adminShell('products.html');
 document.querySelectorAll('[data-icon]').forEach((el) => { el.innerHTML = icon(el.dataset.icon, el.dataset.icon === 'image' ? 28 : 18); });
 $('addBtn').insertAdjacentHTML('afterbegin', icon('plus', 18));
