@@ -12,6 +12,7 @@ const next = new URLSearchParams(location.search).get('next');
 const dest = /^[a-z0-9-]+\.html(\?[\w=&%.-]*)?$/i.test(next || '') ? next : null;
 const go = (user) => location.replace(dest || homeFor(user));
 if (current()) go(current());
+document.getElementById('signedOut').hidden = new URLSearchParams(location.search).get('signed-out') !== '1';
 
 const copy = {
   in: ['Welcome back', 'Sign in to your seller or customer account.'],

@@ -184,8 +184,14 @@ select.control, .field select {
   border: 1.5px dashed var(--line); border-radius: var(--radius-lg); background: var(--surface-soft);
 }
 .empty__icon { display: grid; place-items: center; width: 56px; height: 56px; border-radius: 50%; background: var(--cream); color: var(--crimson); }
+.empty__mascot { width: 104px; height: 104px; object-fit: contain; margin-bottom: -2px; }
 .empty h3 { font-size: 1.15rem; color: var(--navy); }
 .empty p { max-width: 42ch; }
+
+/* ---------- Order confirmation ---------- */
+.order-success { display: flex; align-items: center; gap: 12px; }
+.order-success:empty { display: none; }
+.order-success__mascot { flex: none; width: 88px; height: 96px; object-fit: contain; }
 
 /* ---------- Toasts ---------- */
 #toasts { position: fixed; right: 20px; bottom: 20px; z-index: 200; display: flex; flex-direction: column; gap: 10px; max-width: min(380px, calc(100vw - 40px)); }

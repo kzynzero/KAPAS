@@ -49,7 +49,7 @@ function render() {
   $('empty').hidden = list.length > 0;
   $('empty').innerHTML = mats.length
     ? emptyState('search', 'No materials match', 'Try another search word or stock level.')
-    : emptyState('layers', 'No materials yet', 'Add the wood, paint and other supplies you work with, and set a reorder level for each.');
+    : emptyState('layers', 'No materials yet', 'Add the wood, paint and other supplies you work with, and set a reorder level for each.', 'Kappy peeking.png');
 
   const prods = store.where('products', (p) => p.ownerId === user.id);
   const keepP = $('productId').value, keepM = $('materialId').value;

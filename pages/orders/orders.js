@@ -42,7 +42,7 @@ function render() {
   $('empty').hidden = mine.length > 0; $('board').hidden = !mine.length;
   $('empty').innerHTML = all.length
     ? emptyState('search', 'No orders match', 'Try another name, contact or product.')
-    : emptyState('inbox', 'No order requests yet', 'When someone sends one from your product page, it shows up here as Pending.');
+    : emptyState('inbox', 'No order requests yet', 'When someone sends one from your product page, it shows up here as Pending.', 'Kappy peeking.png');
   $('count').textContent = all.length ? `${mine.length} of ${all.length} order${all.length === 1 ? '' : 's'}` : '';
   $('board').innerHTML = STATUSES.map(([k, v]) => {
     const col = mine.filter((o) => o.status === k);

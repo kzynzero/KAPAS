@@ -63,7 +63,7 @@ function render() {
   $('empty').hidden = list.length > 0;
   $('empty').innerHTML = mine.length
     ? emptyState('search', 'No products match', 'Try another search word or clear the filters.')
-    : emptyState('package', 'You have no products yet', 'Add your first product and it can appear in the public catalog right away.');
+    : emptyState('package', 'You have no products yet', 'Add your first product and it can appear in the public catalog right away.', 'Kappy peeking.png');
   $('count').textContent = mine.length ? `Showing ${list.length} of ${mine.length} product${mine.length === 1 ? '' : 's'}` : '';
   $('cats').innerHTML = categoriesOf(store.list('products')).map((c) => `<option value="${esc(c)}">`).join('');
 }

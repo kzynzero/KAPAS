@@ -52,7 +52,7 @@ function render() {
   $('empty').hidden = list.length > 0;
   $('empty').innerHTML = all.length
     ? emptyState('search', 'No orders match', 'Try another word or show all orders.')
-    : emptyState('inbox', 'No orders yet', 'Open a product in the <a href="index.html#catalog">catalog</a> and send an order or made-to-order request.');
+    : emptyState('inbox', 'No orders yet', 'Open a product in the <a href="index.html#catalog">catalog</a> and send an order or made-to-order request.', 'Kappy peeking.png');
   $('count').textContent = all.length ? `${list.length} of ${all.length}` : '';
 }
 document.querySelectorAll('[data-filter]').forEach((b) => (b.onclick = () => { $('fView').value = $('fView').value === b.dataset.filter ? '' : b.dataset.filter; render(); }));

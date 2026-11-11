@@ -42,6 +42,8 @@
 .catalog { margin-top: 72px; scroll-margin-top: 80px; }
 .catalog__head { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 12px; margin-bottom: 20px; }
 .catalog__head h2 { font-size: clamp(1.7rem, 3vw, 2.2rem); }
+.catalog__aside { display: flex; align-items: center; gap: 12px; }
+.catalog__aside img { width: 76px; height: 92px; object-fit: contain; }
 .catalog__toolbar { margin-bottom: 14px; }
 .catalog__toolbar .search { max-width: 420px; }
 
@@ -83,6 +85,7 @@
 @media (max-width: 520px) {
   .hero__cta .btn { flex: 1 1 100%; }
   .hero__stats div { flex: 1; min-width: 0; padding: 12px; }
+  .catalog__aside img { width: 58px; height: 72px; }
   .product-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
   .pcard__body { padding: 12px; }
   .pcard__body h3 { font-size: 0.98rem; }

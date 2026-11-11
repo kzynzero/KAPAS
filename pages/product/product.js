@@ -98,8 +98,7 @@ form.addEventListener('submit', async (e) => {
   const btn = $('sendBtn'); btn.disabled = true;
   try {
     const o = await placeOrder(me, { ...Object.fromEntries(new FormData(form)), productId: id });
-    $('done').innerHTML = esc((o.madeToOrder ? 'Made-to-order request' : 'Order request') + ' sent to ' + ownerName(o.sellerId) + '. They will contact you at ' + o.contact + '. ') +
-      '<a href="customer.html">Track it in My orders</a>';
+    $('done').innerHTML = `<img class="order-success__mascot" src="assets/Kappy happy.png" alt="" aria-hidden="true"><span>${esc((o.madeToOrder ? 'Made-to-order request' : 'Order request') + ' sent to ' + ownerName(o.sellerId) + '. They will contact you at ' + o.contact + '. ')}<a href="customer.html">Track it in My orders</a></span>`;
     form.quantity.value = 1; form.notes.value = ''; form.pickupDate.value = ''; updateTotal();
     toast('Order request sent');
   } catch (err) { err instanceof FormError ? showErrors(form, err.fields) : ($('formError').textContent = err.message); }

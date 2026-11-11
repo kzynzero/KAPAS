@@ -28,8 +28,12 @@
 .auth__main { display: flex; align-items: center; justify-content: center; padding: 48px 24px; }
 .auth__card { width: 100%; max-width: 520px; display: flex; flex-direction: column; gap: 22px; animation: fade-up 0.45s var(--ease) both; }
 .auth__mobile-brand { display: none; color: var(--navy); }
+.auth__head { position: relative; display: flex; flex-direction: column; justify-content: center; min-height: 112px; padding-right: 112px; }
+.auth__head > img { position: absolute; top: 0; right: 0; width: 108px; height: 112px; object-fit: contain; }
 .auth__head h1 { font-size: 2.2rem; }
 .auth__head p { margin-top: 6px; font-size: 1rem; }
+.auth__signed-out { display: flex; align-items: center; gap: 14px; padding: 10px 16px; border: 1px solid var(--line); border-radius: var(--radius-lg); background: var(--surface); color: var(--navy); font-weight: 500; }
+.auth__signed-out img { flex: none; width: 72px; height: 78px; object-fit: contain; }
 .auth__switch { text-align: center; }
 .auth__back { text-align: center; }
 .auth__back a { display: inline-flex; align-items: center; gap: 6px; color: var(--muted); font-weight: 500; }
@@ -65,6 +69,13 @@
   .auth__main { align-items: flex-start; padding: 32px 18px 48px; }
 }
 @media (max-width: 480px) { .roles { grid-template-columns: 1fr; } }
+@media (max-width: 520px) {
+  .auth__head { min-height: 96px; padding-right: 90px; }
+  .auth__head > img { width: 86px; height: 96px; }
+  .auth__head h1 { font-size: 1.9rem; }
+  .auth__signed-out { gap: 10px; padding: 8px 12px; }
+  .auth__signed-out img { width: 60px; height: 66px; }
+}
 
 @media (max-height: 520px) {
   .auth__art { padding: 24px 32px; gap: 16px; }

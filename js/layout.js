@@ -19,7 +19,7 @@ function counts(u) {
 // Customers: orders that are not completed yet.
 const activeOrders = (u) => (isCustomer(u) ? store.where('orders', (o) => o.buyerId === u.id && o.status !== 'completed').length : 0);
 
-const signOut = () => { logout(); location.replace('login.html'); };
+const signOut = () => { logout(); location.replace('login.html?signed-out=1'); };
 
 export async function adminShell(active) {
   await store.ready;

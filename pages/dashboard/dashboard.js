@@ -38,7 +38,7 @@ function render() {
       <span class="feed__main"><strong>${esc(o.customerName)}</strong><small>${o.items.map((i) => i.qty + ' × ' + esc(i.name)).join(', ')} · ${date(o.createdAt)}</small></span>
       <span class="feed__end">${o.madeToOrder ? '<span class="pill pill--info">Made to order</span>' : ''}<b>${peso(o.total)}</b><span class="pill ${tone[o.status]}">${label[o.status]}</span></span></a></li>`).join('');
   $('recentEmpty').hidden = recent.length > 0;
-  $('recentEmpty').innerHTML = emptyState('inbox', 'No requests yet', 'When a customer sends a request from your product page, it appears here.');
+  $('recentEmpty').innerHTML = emptyState('inbox', 'No requests yet', 'When a customer sends a request from your product page, it appears here.', 'Kappy peeking.png');
 
   const low = mats.filter((m) => m.quantity <= m.reorderLevel).sort((a, b) => a.quantity - b.quantity);
   $('lowList').innerHTML = low.map((m) => { const s = materialState(m); return `<li><a class="feed__row" href="materials.html">

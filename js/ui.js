@@ -80,5 +80,5 @@ export async function compressImage(file) {
   return c.toDataURL('image/jpeg', 0.8);
 }
 
-export const emptyState = (iconName, title, body) =>
-  `<div class="empty__icon">${icon(iconName, 26)}</div><h3>${esc(title)}</h3><p>${body}</p>`;
+export const emptyState = (iconName, title, body, mascot = '') =>
+  `${mascot ? `<img class="empty__mascot" src="assets/${esc(mascot)}" alt="" aria-hidden="true">` : ''}<div class="empty__icon">${icon(iconName, 26)}</div><h3>${esc(title)}</h3><p>${body}</p>`;

@@ -41,7 +41,7 @@ function render() {
   $('empty').hidden = list.length > 0;
   $('empty').innerHTML = all.length
     ? emptyState('search', 'Nothing matches yet', 'Try another word or choose a different category.')
-    : emptyState('package', 'No products listed yet', 'Artisans and businesses can <a href="login.html#create">create a seller account</a> and add the first one.');
+    : emptyState('package', 'No products listed yet', 'Artisans and businesses can <a href="login.html#create">create a seller account</a> and add the first one.', 'Kappy peeking.png');
 
   $('sProducts').textContent = all.length;
   $('sMakers').textContent = new Set(all.map((p) => p.ownerId)).size;
